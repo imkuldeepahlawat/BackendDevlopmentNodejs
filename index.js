@@ -1,31 +1,25 @@
 // creating a http server
+require('dotenv').config();
 const express = require("express");
-
 const app = express();
 const port = 3001;
-const currencyData = require("./Data/currency.json");
-const {
-  getCurrencyNameData,
-  getAllCurrencyData,
-} = require("./Controllers/currency.controller");
-const {
-  getUser,
-  getUserUuid,
-  searchUser,
-} = require("./Controllers/user.controller");
+const currencyRoutes = require("./Routes/currency.routes");
+const usersRoutes = require("./Routes/users.routes");
+const queryValidator = require("./validations/users.validator");
+
+
 
 // listinging
 app.listen(port, () => {
   console.log("Server Started On port No. ", port);
 });
-
+// default routes
 app.get("/", (req, res) => {
   res.send("<h1>Your Are on home /</h2>");
 });
 
-app.get("/users", getUser);
-app.get("/users/search", searchUser);
-app.get("/users/:uuid", getUserUuid);
+app.use("/users",usersRoutes);
+app.use("/cur",currencyRoutes);
 
-app.get("/cur/", getAllCurrencyData);
-app.get("/cur/:name", getCurrencyNameData);
+
+
